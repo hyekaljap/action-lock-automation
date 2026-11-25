@@ -1,0 +1,28 @@
+# Fill this in before running. Claude reads it; don't commit real passwords to a shared repo.
+
+APP_ID: com.example.caction          # find with: adb shell pm list packages | findstr caction
+DEVICE_ID: 192.168.1.23:41235        # from: adb devices
+
+accounts:
+  user:     { username: "", password: "" }
+  subadmin: { username: "", password: "" }
+  admin:    { username: "", password: "" }
+  technician: { username: "", password: "" }
+
+# Test records prepared on staging (use test data only)
+records:
+  locked_job_id: "J-10482"           # Job in a Block all status (e.g. Completed)
+  in_progress_job_id: ""
+  locked_customer_id: "C00041"       # Customer in Block creation / Block all
+  frozen_customer_id: ""             # Customer in a Freeze status
+  open_customer_id: ""               # Customer with no lock
+  project_id: "P00055"
+  signed_form_id: "SS00377"
+
+# Set to true only after you've set these up on web (Status Settings / Admin Panel)
+preconditions_ready:
+  feature_flag_on: false
+  job_completed_block_all: false
+  customer_contract_expired_block_creation: false
+  customer_suspended_freeze: false
+  df_signed_block_all: false

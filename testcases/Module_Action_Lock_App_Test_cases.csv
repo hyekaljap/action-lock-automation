@@ -1,0 +1,279 @@
+Scenario,Description,Preconditions,Steps,Expected Result,Actual Result,Status,Severity,Platform,Comments,Impv DB
+Action Lock feature switched off for company,"When enable_action_lock is off, no status lock applies on the app even if locks are configured (AC-07).","1. enable_action_lock is OFF for the company (Admin Panel)
+2. Job status Completed is set to Block all in Status Settings (web)
+3. Job J-10482 is Completed
+4. Logged in on app as User","1. Open the app and go to Job J-10482
+2. Try Edit details, Change status and Post update
+3. Check the page for a lock chip","1. No lock chip is shown
+2. All actions work as normal
+3. The Block all setting is kept in Status Settings (not deleted)",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+No status is locked by default after enabling the feature,"Every status starts at No lock for new and existing companies; nothing is migrated or seeded (AC-30, BR-18).","1. enable_action_lock switched ON for an existing company
+2. No admin has set any lock
+3. Logged in on app as User","1. Open any Customer, Project, Job and Digital Form on the app
+2. Try edit, change status, post update and create actions","1. No lock chip on any record
+2. All actions work as before the feature was enabled",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Job in Block all status shows Locked chip and greyed controls,"Job whose own status is set to Block all is locked for a non-override role; controls stay visible but greyed (AC-15, FR-06).","1. Job status Completed = Block all, Override = Admin only
+2. Job J-10482 is Completed
+3. Logged in on app as User","1. Open Job J-10482
+2. Observe the header beside Edit
+3. Observe Edit, Change status, Assign, Copy, Delete, Check-in and the (+) button
+4. Tap the Edit button","1. 'Locked' chip shown beside Edit
+2. Locked buttons are greyed, visible and keep their own icon (no lock icon on buttons)
+3. (+) button is hidden because all its items are locked
+4. Tapping Edit shows toast: ""Locked: you can't edit details. Completed status is locked.""
+5. Status pill shows a lock icon",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Lock chip details panel lists locked and allowed actions,"Tapping the lock chip opens a panel with the reason and each action's state (FR-06, AC-02).","1. Job status Completed = Block all, Override = Admin only
+2. Job J-10482 is Completed
+3. Logged in on app as User","1. Open Job J-10482
+2. Tap the Locked chip
+3. Review the panel
+4. Tap Close","1. Panel shows reason ""Completed status is locked."" and when the lock started
+2. Edit details, Change status, Assign users, Delete, Check-in, Post updates are each marked locked/allowed correctly
+3. Panel closes on Close",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Post update on locked job falls back to Chat only,"When updates are locked, comment category is fixed to Chat with a notice (FR-04, AC-03).","1. Job status Completed = Block all
+2. Job J-10482 is Completed with a To-do list
+3. Logged in on app as Technician","1. Open Job J-10482 > Updates
+2. Open the comment category dropdown
+3. Read the note above the comment box
+4. Send a text message with a mention and a photo
+5. Try to edit or delete an earlier update","1. Category is fixed to Chat; other categories are hidden
+2. Note says updates are closed, why, and that messages won't count toward To-do or performance
+3. Message with mention and photo posts successfully in Chat
+4. Earlier updates can't be edited or deleted",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Chat message during lock does not tick To-do or count in performance,"Messages posted in Chat while locked are tagged lock_fallback = 1 and skipped by To-do and metrics (BR-09, AC-03).","1. Job status Completed = Block all
+2. Job J-10482 is Completed; To-do item 'Work Done' still unticked
+3. Note current To-do progress and comment count in performance
+4. Logged in on app as Technician","1. Open Job J-10482 > Updates
+2. Post 'Work Done' message (category forced to Chat)
+3. Check the To-do list progress
+4. Check comment metric / performance figures","1. Message posts in Chat
+2. To-do item stays unticked; progress unchanged
+3. Comment metrics/performance unchanged
+4. Smart To-do is not triggered",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Check-in blocked but Check-out always allowed on locked job,"Check-in is locked under Block all; check-out is never locked so technician can leave site (FR-03, BR-05).","1. Job status Completed = Block all
+2. Technician was checked in on J-10482 before it moved to Completed
+3. Logged in on app as Technician","1. Open Job J-10482
+2. Tap Check-out
+3. Tap Check-in again","1. Check-out succeeds
+2. Check-in is greyed; tapping shows lock toast with reason",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Never-locked actions remain available on locked record,"View, PDF, Share Job Details, View QR, Export, alert bell and Change To Do List stay open (BR-05).","1. Job status Completed = Block all
+2. Job J-10482 is Completed
+3. Logged in on app as User","1. Open Job J-10482 and scroll history
+2. Open/download the PDF
+3. Share Job Details via WhatsApp
+4. View the QR code
+5. Toggle the personal alert bell
+6. Use Change To Do List","1. All listed actions work without any lock toast
+2. Manual Change status remains locked",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Admin override on Admin only lock shows record as normal,"Allowed role sees no chip, no marks, no pop-up and actions run straight away (FR-07, AC-05, AC-15).","1. Job status Completed = Block all, Override = Admin only
+2. Job J-10482 is Completed
+3. Logged in on app as Admin","1. Open Job J-10482
+2. Edit a field and save
+3. Post an update in a normal category
+4. Change status","1. No lock chip, no shield marks, no hints
+2. Edit saves with no pop-up
+3. Update posts in the chosen category
+4. Status change works",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Subadmin override depends on Override By setting,Subadmin is blocked when Override = Admin only and allowed when Override = Admin & Subadmin (AC-05).,"1. Job status Completed = Block all, Override = Admin only
+2. Job J-10482 is Completed
+3. Logged in on app as Subadmin","1. Open Job J-10482 and try Edit details
+2. On web, change Override to Admin & Subadmin and save
+3. On app, reopen J-10482 and try Edit details again","1. Step 1: Edit is greyed, toast shows lock reason and Admin only
+2. Step 3: page shows as normal, edit saves without pop-up",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Moving a job into a locked status shows Move to pop-up,"Status picker marks locked statuses and asks to confirm before moving into one (AC-17, FR-06).","1. Job status Completed = Block all
+2. Job J-10482 is In Progress
+3. Logged in on app as User","1. Open Job J-10482 and tap the status pill
+2. Observe Completed in the list
+3. Select Completed
+4. Tap Cancel
+5. Repeat and tap Move to Completed","1. Completed shows a lock icon
+2. 'Move to Completed?' pop-up shows In Progress → Completed with a note on what Block all blocks
+3. Cancel keeps In Progress
+4. Move to Completed moves the job and it becomes locked",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Record locked by another user while page is open,Next action is refused with 423 and a dialog says who changed the status (AC-18).,"1. Job status Completed = Block all
+2. Job J-10482 is In Progress
+3. User A has J-10482 open on the app
+4. User B is on web","1. User B moves J-10482 to Completed
+2. User A (without refreshing) edits a field and saves","1. Save is refused (423)
+2. Dialog names User B and the time of the status change
+3. Page refreshes into the locked view",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Gantt dependency lock shows before Action Lock,"When dependency lock and status lock both apply, dependency dialog shows first (AC-11, BR-10).","1. Job status Completed = Block all
+2. Job J-10482 is Completed and has an uncompleted predecessor
+3. Logged in on app as User","1. Open Job J-10482
+2. Try an action
+3. Complete the predecessor job and reopen J-10482","1. Existing 'Action Locked' dependency dialog shows first
+2. After dependency clears, Action Lock chip/reasons appear",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Digital Form in Signed (Block all) locks fields and status,Signed form cannot be edited or status changed; PDF and Chat stay open (AC-04).,"1. DF status Signed = Block all, Override = Admin only
+2. Form SS00377 is Signed
+3. Logged in on app as User","1. Open Form SS00377
+2. Try editing a field
+3. Try changing status
+4. View and download the PDF
+5. Post a remark","1. Field edit and status change are locked with the reason
+2. PDF view and download work
+3. Remark goes to Chat only",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Digital Form ⋯ and (+) menu actions locked,"Copy, Delete, Assign User, Create DF, Get Signature, Send E-mail, Create PF and Generate QR are greyed on a locked form (AC-20).","1. DF status Signed = Block all
+2. Form SS00377 is Signed
+3. Logged in on app as User","1. Open Form SS00377
+2. Open the ⋯ menu and tap each item
+3. Open the (+) menu and tap each item","1. Copy, Delete, Assign User, Create Digital Form, Get Signature / Feedback, Send E-mail, Create Public Form, Generate QR are greyed
+2. Tapping each shows the lock toast
+3. PDF and Chat stay open",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Customer in Block all locks customer and blocks creation below,Customer page fully locked; child Project/Job have no chip but cannot create Job/Sub-Job; DFs still allowed (AC-01).,"1. Customer status Contract Expired = Block all
+2. Customer C00041 is Contract Expired with Project P00055 and Job J-10482
+3. Logged in on app as User","1. Open Customer C00041 and try Edit / Create Project / Create Job
+2. Open Project P00055 and tap New Job, then create a Digital Form
+3. Open Job J-10482 and tap Create Sub-Job, then edit a field and post an update","1. Customer: Locked chip, every action locked, Chat open
+2. Project: no chip; New Job shows toast naming C00041 and its status; DF is created
+3. Job: no chip; Create Sub-Job blocked with parent toast; edit and update work",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Customer in Block creation blocks new work but keeps editing,"Block creation shows 'New work blocked' chip; edit, status and assign still work (AC-28).","1. Customer status Contract Expired = Block creation
+2. Customer C00041 is Contract Expired with Job J-10482
+3. Logged in on app as User","1. Open Customer C00041 and check the chip
+2. Edit a field, change assignee
+3. Try Create Project, Create Job and Create Digital Form
+4. Open Job J-10482: edit, check-in, create DF, then Create Sub-Job","1. Chip reads 'New work blocked'
+2. Edit and assign succeed
+3. New Project, Job and DF on the customer are refused with toast
+4. Job: no chip; edit, check-in and new DF work; Create Sub-Job refused with toast naming C00041",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Attach Site/Customer picker greys out locked customers,"Locked customers and contracts stay listed but greyed and cannot be selected (AC-12, FR-05).","1. Customer status Contract Expired = Block creation
+2. Customer C00254 is Contract Expired
+3. Project status Completed = Block all; an open customer has a Completed contract
+4. Logged in on app as User","1. Tap Add Job
+2. Open the Attach Site/Customer picker and find C00254
+3. Tap C00254
+4. Select the open customer and view its contracts","1. C00254 is greyed with 'Locked: Site/Customer is Contract Expired'
+2. Tapping shows the reason and does not select it
+3. The Completed contract is greyed; Use default and New Contract stay available for the open customer",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Edit Job cannot move job to a locked customer,"Job stays under locked customer; can move only to a parent that is not locked (AC-13, BR-08).","1. Customer status Contract Expired = Block creation
+2. Job J-10482 sits under C00041, which is Contract Expired
+3. Customer C00099 is Active
+4. Logged in on app as User","1. Open J-10482 > Edit > Site/Customer pencil
+2. Read the note
+3. Try to pick another contract of C00041
+4. Pick C00099 and save","1. Note says the job stays and can only move to a parent that is not locked
+2. C00041 and its contracts can't be picked
+3. Saving with C00099 moves the job successfully",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Copy Job / New Job under locked customer refused,Copy and create under a locked parent show the parent-lock toast; no chip or dialog (AC-14).,"1. Customer status Contract Expired = Block creation
+2. Customer C00041 is Contract Expired with Job J-10482 and Project P00055
+3. Logged in on app as User","1. Open J-10482 and tap Copy Job
+2. Open P00055 and tap New Job","1. Toast: ""Customer C00041 is Contract Expired, so no new jobs can be created under this customer.""
+2. No job is created; no chip or dialog shown",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Job list shows lock icon and locked parent label,"List shows lock icon on locked jobs and a label when Site/Customer is locked (AC-22, FR-06).","1. Job status Completed = Block all
+2. Customer status Contract Expired = Block creation
+3. J-10482 is In Progress under C00041 (Contract Expired)
+4. J-10500 is Completed
+5. Logged in on app as Technician","1. Open the job / schedule list
+2. Find J-10482 and J-10500","1. J-10482 row shows 'Site/Customer Contract Expired'; job itself is not locked
+2. J-10500 row shows a lock icon",,Not started,Low,App,,[App] [FE Product] Module Status Action Lock
+New Digital Form on existing job under locked customer is allowed,"Create Digital Form does not cascade under Block creation/Block all so To-do can finish (AC-19, BR-04).","1. Customer status Contract Expired = Block all
+2. J-10482 is In Progress under C00041 (Contract Expired) with a To-do requiring a Service Report
+3. Logged in on app as Technician","1. Open J-10482 To-do
+2. Create the Service Report form
+3. Complete the To-do list","1. Form is created
+2. Smart To-do moves the job to the next status even if that status is locked",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Subadmin with multiple locks needs every lock to allow override,"Override requires role allowed by every applicable lock (AC-23, BR-03).","1. Job status Completed = Block all, Override = Admin & Subadmin
+2. Customer status Contract Expired = Block creation, Override = Admin only
+3. J-10482 is Completed under C00041 (Contract Expired)
+4. Logged in on app as Subadmin","1. Open J-10482
+2. Try Create Sub-Job
+3. Try Edit details","1. Create Sub-Job refused (customer lock allows Admin only)
+2. Edit details runs as normal (only the job lock applies and allows Subadmin)",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Freeze prompt changes jobs in progress to Completed or Cancelled,"Moving a customer into Freeze asks what happens to jobs in progress and applies the choice before locking (AC-24, FR-10).","1. Customer status Suspended = Freeze customer and all its work
+2. Customer C00041 is Active with J-10482 In Progress
+3. Logged in on app as Admin","1. Open C00041 and change status to Suspended
+2. Review the jobs in progress box
+3. Choose Change to Completed and confirm
+4. Open J-10482 and check updates and audit log","1. Pop-up lists J-10482 with Change to Completed, Change to Cancelled, Leave as they are (default)
+2. Job moves to Completed, then customer moves to Suspended
+3. System comment names the customer, status and who chose; audit entry 'Status set by the Freeze prompt'
+4. Customer and all its work are locked",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Freeze 'Leave as they are' keeps job In Progress but locked,Job left In Progress is locked; only Check-out and Chat stay open for technician (AC-26).,"1. Customer status Suspended = Freeze, Override = Admin only
+2. C00041 moved to Suspended with 'Leave as they are'; J-10482 stays In Progress
+3. Logged in on app as Technician (checked in)","1. Open J-10482
+2. Try edit, change status, check-in and create a form
+3. Check out
+4. Post a Chat message","1. Locked chip names C00041 (Freeze)
+2. Edit, status, check-in and create are refused with the Freeze toast
+3. Check-out and Chat work",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Freeze locks Pending job under frozen customer,A job not In Progress under a Freeze parent is fully locked for non-override roles (AC-25).,"1. Customer status Suspended = Freeze, Override = Admin only
+2. C00041 is Suspended; J-10482 is Pending
+3. Logged in on app as Subadmin","1. Open J-10482
+2. Try Edit details, Check-in and create a Digital Form
+3. Open Chat and the PDF","1. Edit, Check-in and new form are refused with toast ""Customer C00041 is Suspended (Freeze customer and all its work), so this job is locked. Override: Admin only.""
+2. Chat and PDF stay open
+3. Job shows Locked chip naming the customer",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Forms with In Progress Status Type stay editable under Freeze,Only forms whose own Status Type is In Progress are exempt from Freeze (AC-31).,"1. Customer C00041 is in a Freeze status
+2. Form QT-0087 is Created (Status Type In Progress)
+3. Another form is Signed (Status Type Completed)
+4. Logged in on app as User","1. Open QT-0087 and edit a field
+2. Open the Signed form and edit a field
+3. Move QT-0087 to Submitted/Signed (non-In Progress) and try editing again","1. QT-0087 is editable and shows no chip
+2. Signed form is locked
+3. Once QT-0087 leaves In Progress it becomes locked",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Frozen job cannot move to In Progress or be reopened,"Freeze parent blocks moving jobs into In Progress (manual or Smart To-do) and reopening completed jobs (AC-32, AC-33).","1. Customer C00041 is in a Freeze status, Override = Admin only
+2. J-10482 is Pending; J-10490 is Completed
+3. Users: User and Admin on app","1. As User, move J-10482 to In Progress
+2. Trigger Smart To-do that would move J-10482 to In Progress
+3. As User, reopen J-10490
+4. As Admin, move J-10482 to In Progress","1. User move refused with toast naming the Freeze lock
+2. Smart To-do does not move the job and logs the reason
+3. Reopen refused with lock reason and who can override
+4. Admin move succeeds",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Moving customer out of Freeze unlocks all work at once,Leaving the Freeze status frees everything below; prompt-changed jobs keep their new status (AC-36).,"1. C00041 is Suspended (Freeze); J-10482 was changed to Completed at the prompt; J-10483 was left In Progress
+2. Logged in on app as Admin","1. Move C00041 back to Active
+2. Log in as User and open J-10482 and J-10483
+3. Try edit, check-in and create a form on J-10483","1. No Freeze chip on either job
+2. J-10482 stays Completed; J-10483 stays In Progress
+3. Actions on J-10483 work (unless the job's own status is locked)",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Offline work is synced and checked against locks,"Offline work is not blocked; lock is checked at sync and refused changes appear in sync errors (AC-35, BR-17).","1. Customer status Suspended = Freeze
+2. Technician has J-10482 (under C00041) open on the app and is checked in","1. Turn the device offline
+2. On web, move C00041 to Suspended
+3. On app (offline), edit a field, post an update and check out
+4. Turn the device online and let it sync","1. Nothing is blocked while offline
+2. At sync, the field edit and update are rejected and listed in sync errors with the lock reason
+3. Check-out is accepted",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Project in Block all locks the project page,Project whose own status is set to Block all is locked for a non-override role; Chat and never-locked actions stay open (AC-02).,"1. Project status Completed = Block all, Override = Admin only
+2. Project P00055 is Completed
+3. Logged in on app as User","1. Open Project P00055 and check the header
+2. Tap the Locked chip
+3. Try Edit, Change status, Assign, Copy, Delete, New Job and New Digital Form
+4. Open Updates and post a message
+5. Share, View QR, Export and toggle the alert bell","1. 'Locked' chip shown beside Edit; panel names the Completed status and marks each action locked or allowed
+2. Edit, Change status, Assign, Copy, Delete, New Job and New DF are greyed; tapping each shows the lock toast with the reason
+3. Comment category is fixed to Chat with the notice
+4. Share, View QR, Export and alert bell work",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Freeze on a Project locks only that project's work,Freeze on a Project locks the project and its own jobs and forms; the customer and its other projects are not affected (AC-27).,"1. Project status Cancelled = Freeze project and all its work, Override = Admin only
+2. Customer C00041 is Active with Project P00055 (Job J-10482 Pending) and Project P00056 (Job J-10495 Pending)
+3. Logged in on app as Admin, then as User","1. As Admin, move P00055 to Cancelled and choose Leave as they are
+2. As User, open J-10482 and try Edit details and Check-in
+3. Open J-10495 and try Edit details and Check-in
+4. Open C00041 and try Edit details and Create Project","1. J-10482 shows Locked chip naming P00055 (Freeze); Edit and Check-in refused with the Freeze toast
+2. J-10495 has no chip; Edit and Check-in work
+3. C00041 has no chip; Edit and Create Project work",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
+Freeze prompt 'Change to Cancelled' cancels jobs in progress,"Choosing Change to Cancelled moves every job and sub-job in progress to Cancelled before the lock starts, and logs it on each job (AC-24, FR-10).","1. Customer status Suspended = Freeze customer and all its work, Override = Admin only
+2. Customer C00041 is Active with Job J-10482 and its sub-job both In Progress
+3. Logged in on app as Admin","1. Open C00041 and change status to Suspended
+2. Review the jobs in progress box
+3. Choose Change to Cancelled and confirm
+4. Open J-10482 and its sub-job; check status, updates and audit log
+5. Log in as User and open J-10482","1. Box says ""2 jobs are In Progress under this customer"" and lists both
+2. Both jobs move to Cancelled, then the customer moves to Suspended
+3. Each job has the system comment ""System changed the status from In Progress to Cancelled because Customer C00041 was moved to Suspended (chosen by <Admin name>)"" and audit entry 'Status set by the Freeze prompt'
+4. As User, J-10482 shows Locked chip naming C00041 (Freeze)",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+Freeze set through API or import shows no prompt on the app,"When a customer is moved into Freeze by API, automation or import, no prompt appears and jobs in progress stay as they are, but locked (AC-34, BR-15).","1. Customer status Suspended = Freeze customer and all its work, Override = Admin only
+2. Customer C00041 is Active with Job J-10482 In Progress
+3. Technician is checked in on J-10482 on the app","1. Move C00041 to Suspended through the API (or an import / automation)
+2. On the app, pull to refresh J-10482
+3. Try Edit details and post an update
+4. Check out","1. No Freeze prompt appears anywhere; J-10482 stays In Progress with no system comment
+2. J-10482 shows Locked chip naming C00041 (Freeze)
+3. Edit refused with the Freeze toast; update goes to Chat only
+4. Check-out works",,Not started,Medium,App,,[App] [FE Product] Module Status Action Lock
+No one' override blocks Admin too,"When a 'Who can' row on a locked status is set to No one, nobody can override that action, Admin included; Change status never offers No one (FR-07, added 18 Nov 2026).","1. Job status Completed = Block all, Override = Admin only
+2. In Status Settings (web), the Edit details row for Completed is set to No one
+3. Job J-10482 is Completed
+4. Logged in on app as Admin","1. Open J-10482
+2. Tap Edit
+3. Change status to In Progress","1. Edit is greyed
+2. Toast shows the lock reason and ""No one can override it.""
+3. Status change works for Admin (Change status can't be set to No one)",,Not started,High,App,,[App] [FE Product] Module Status Action Lock
