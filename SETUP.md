@@ -3,8 +3,11 @@
 ## 1. Install (once, on your laptop)
 1. **Android platform-tools** (adb), and add the folder to PATH. Check: `adb version`
 2. **Java 17+**. Check: `java -version`
-3. **Maestro**. See https://maestro.mobile.dev for the install command for your OS. Check: `maestro --version`
-4. **Claude Code**. See https://docs.anthropic.com/en/docs/claude-code/overview
+3. **Node.js** and **Appium** with the UiAutomator2 driver:
+   `npm install -g appium` then `appium driver install uiautomator2`. Check: `appium --version`
+   Appium needs `ANDROID_HOME` (the folder that contains `platform-tools`) and `JAVA_HOME` set.
+4. **Python 3.11+**, then in this folder: `python -m pip install -r requirements.txt`
+5. **Claude Code**. See https://docs.anthropic.com/en/docs/claude-code/overview
 
 ## 2. Make the project folder
 ```
@@ -29,7 +32,14 @@ Fill in `config.yaml`: app id, test accounts, test record IDs. Use **staging and
 In Status Settings, set the locks the test cases need (e.g. Job Completed = Block all), then flip the
 matching `preconditions_ready` entries in `config.yaml` to `true`.
 
-## 5. Start Claude Code in the folder
+## 5. Start the Appium server and sign in on the phone
+```
+appium
+```
+Leave it running (default http://127.0.0.1:4723). Sign in on the Caction Staging app with the account
+the test case needs; the tests check who is signed in but never type passwords.
+
+## 6. Start Claude Code in the folder
 ```
 cd action-lock-automation
 claude
@@ -37,14 +47,16 @@ claude
 First prompt to give it:
 
 > Read CLAUDE.md and config.yaml, then check the phone is connected with adb devices.
-> Start with TC03 only: inspect the screens, write the Maestro flow, run it, and record the result.
-> Show me the flow before running it.
+> Start with TC03 only: inspect the screens, write the pytest test, run it, and record the result.
+> Show me the test before running it.
+
+Run a test yourself: `python -m pytest tests/test_tc03_job_block_all_chip.py -v`
 
 When TC03 works, continue in small batches:
 
 > Do TC04 to TC09 the same way, one at a time, and give me the summary at the end.
 
-## 6. Put the results back into Notion
+## 7. Put the results back into Notion
 Open `results/results.csv` and copy **Status** and **Actual Result** into each test case in Notion.
 Attach screenshots from `screenshots/TCxx/` for any Failed case.
 

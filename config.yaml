@@ -1,13 +1,17 @@
 # Fill this in before running. Claude reads it; don't commit real passwords to a shared repo.
 
-APP_ID: com.example.caction          # find with: adb shell pm list packages | findstr caction
-DEVICE_ID: 192.168.1.23:41235        # from: adb devices
+APP_ID: com.connection.crm.dev       # Caction Staging (production is com.connection.crm: never use it)
+APP_ACTIVITY: com.connection.crm.MainActivity
+DEVICE_ID: 192.168.1.23:41235        # from: adb devices (if it isn't connected, the only connected phone is used)
+appium_server_url: http://127.0.0.1:4723
 
+# username = the account's e-mail as shown on the app's Profile screen; tests use it to check
+# who is signed in. Claude never types passwords: sign in on the phone yourself.
 accounts:
   user:     { username: "", password: "" }
   subadmin: { username: "", password: "" }
-  admin:    { username: "", password: "" }
-  technician: { username: "", password: "" }
+  admin:    { username: "Haikal-staging123@yopmail.com", password: "Haikal@0422" }
+  technician: { username: "bombastic12@yopmail.com", password: "73d6fa" }
 
 # Test records prepared on staging (use test data only)
 records:
@@ -18,10 +22,16 @@ records:
   open_customer_id: ""               # Customer with no lock
   project_id: "P00055"
   signed_form_id: "SS00377"
+  # TC02 (no locks by default): records the technician can open, seen on staging 26 Nov 2026
+  tc02_customer_id: "C00109"         # TEMPLATE CUSTOMER TESTING
+  tc02_project_id: "P00031"          # PROJECT TEMPLATE TESTING (under C00109)
+  tc02_job_id: "J00297"              # Site Visit (under P00031)
+  tc02_form_id: ""                   # a Digital Form the technician can open: fill in once created
 
 # Set to true only after you've set these up on web (Status Settings / Admin Panel)
 preconditions_ready:
   feature_flag_on: false
+  no_locks_set: false                # TC02: every status in Status Settings is Mode = Normal
   job_completed_block_all: false
   customer_contract_expired_block_creation: false
   customer_suspended_freeze: false
